@@ -1,28 +1,20 @@
-const assert = require('assert');
-const app = require('../server');
-const request = require('request');
-const fixtures = require('./fixtures');
+var expect = require('chai').expect;
+var request = require('supertest');
 
-describe('Server', () => {
+var app = require('../server');
 
-  before(done => {
-    this.port = 9876;
-
-    this.server = app.listen(this.port, (error, results) => {
-      if (error) { return done(error); }
-      done();
-    });
-
-    this.request = request.defaults({
-      baseUrl: 'http://localhost:9876'
-    });
+describe('GET /', function(){
+  it('responds with success', function(done){
+    request(app)
+      .get('/')
+      .expect(200, done);
   });
+});
 
-  after( () => {
-    this.server.close();
-  });
-
-  it('should exist', () => {
-    assert(app);
+describe('undefined routes', function(){
+  it('respond with a 404', function(done){
+    request(app)
+      .get('/not-real')
+      .expect(404, done);
   });
 });

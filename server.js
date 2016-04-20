@@ -8,10 +8,15 @@ const server = http.createServer(app)
                    console.log('Listening on port ' + port + '.');
                  });
 const io = socketIo(server);
+const bodyParser = require('body-parser');
 
 var votes = {};
 
 app.use(express.static('public'));
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+app.set('port', process.env.PORT || 3000);
+
 app.get('/', function (request, response) {
   response.sendFile(__dirname + '/public/index.html');
 });
